@@ -19,6 +19,7 @@ function App() {
 
     const counts = {};
     const views = {};
+    const AverageViews = {};
     const durations = {};
 
     inCommingData.forEach((item) => {
@@ -30,12 +31,16 @@ function App() {
       if (!views[String(item.year)]) {
         views[String(item.year)] = 0;
       }
+      if (!AverageViews[String(item.year)]) {
+        AverageViews[String(item.year)] = 0;
+      }
       if (!durations[String(item.year)]) {
         durations[String(item.year)] = 0;
       }
 
       counts[String(item.year)] += 1;
       views[String(item.year)] += Number(item.viewCount) / 1000000;
+      AverageViews[String(item.year)] += Number(item.viewCount);
       durations[String(item.year)] += item.seconds;
     });
 
@@ -53,6 +58,14 @@ function App() {
           backgroundColor: 'rgb(150, 200, 250)',
           borderColor: 'rgb(150, 200, 250)',
           data: Object.values(views),
+        },
+        {
+          label: 'average view / 1000',
+          backgroundColor: 'rgb(50, 150, 50)',
+          borderColor: 'rgb(50, 150, 50)',
+          data: Object.keys(AverageViews).map(
+            (yearNum) => AverageViews[yearNum] / counts[yearNum] / 1000
+          ),
         },
         {
           label: 'average duration / 10',
